@@ -2942,9 +2942,7 @@ void Game::updateChat(f32 dtime)
 
 void Game::updateCamera(f32 dtime)
 {
-	if (clouds)
-		clouds->updateCameraOffset(camera_offset);
-				
+					
 	ClientEnvironment &env = client->getEnv();
 	LocalPlayer *player = env.getLocalPlayer();
 
@@ -3019,6 +3017,7 @@ void Game::updateCameraOffset()
 			env.getLocalPlayer()->light_color);
 
 		env.updateCameraOffset(camera_offset);
+	if (clouds)
 		clouds->updateCameraOffset(camera_offset);
 	}
 }
