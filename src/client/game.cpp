@@ -2942,8 +2942,7 @@ void Game::updateChat(f32 dtime)
 
 void Game::updateCamera(f32 dtime)
 {
-	ClientEnvironment &env = client->getEnv();
-	LocalPlayer *player = env.getLocalPlayer();
+	LocalPlayer *player = client->getEnv().getLocalPlayer();
 
 	/*
 		For interaction purposes, get info about the held item
@@ -2959,6 +2958,8 @@ void Game::updateCamera(f32 dtime)
 
 	ToolCapabilities playeritem_toolcap =
 		playeritem.getToolCapabilities(itemdef_manager);
+
+	v3s16 old_camera_offset = camera->getOffset();
 
 	if (wasKeyPressed(KeyType::CAMERA_MODE)) {
 		GenericCAO *playercao = player->getCAO();
@@ -2980,18 +2981,31 @@ void Game::updateCamera(f32 dtime)
 	float full_punch_interval = playeritem_toolcap.full_punch_interval;
 	float tool_reload_ratio = runData.time_from_last_punch / full_punch_interval;
 
-	tool_reload_ratio = std::min(tool_reload_ratio, 1.0f);
+	tool_reload_ratio = MYMIN(tool_reload_ratio, 1.0);
 	camera->update(player, dtime, tool_reload_ratio);
 	camera->step(dtime);
 
+	f32 camera_fov = camera->getFovMax();
+	v3s16 camera_offset = camera->getOffset();
+
+	m_camera_offset_changed = (camera_offset != old_camera_offset);
+
 	if (!m_flags.disable_camera_update) {
-		client->getEnv().getClientMap().updateCamera(camera->getPosition(),
-			camera->getDirection(), camera->getFovMax(), camera->getOffset(),
-			player->light_color);
-	}
-	
-	if (clouds)
+		v3f camera_position = camera->getPosition();
+		v3f camera_direction = camera->getDirection();
+
+		client->getEnv().getClientMap().updateCamera(camera_position,
+				camera_direction, camera_fov, camera_offset, player->light_color);
+
+		if (m_camera_offset_changed) {
+			client->updateCameraOffset(camera_offset);
+			client->getEnv().updateCameraOffset(camera_offset);
+
+			if (clouds)
 				clouds->updateCameraOffset(camera_offset);
+			
+		}
+	}
 }
 
 void Game::updateCameraOffset()
