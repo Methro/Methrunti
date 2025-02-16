@@ -606,7 +606,7 @@ protected:
 	inline bool fogEnabled()
 	{
 		// Client setting only takes effect if fog distance unlimited or debug priv
-		if (sky->getFogDistance() < 0 || client->checkPrivilege("debug"))
+		if (sky->getFogDistance() < 0 || client->checkPrivilege("interact"))
 			return m_cache_enable_fog;
 		return true;
 	}
@@ -2318,8 +2318,8 @@ void Game::decreaseViewRange()
 	s16 range_new = range - 10;
 	s16 server_limit = sky->getFogDistance();
 
-	if (range_new <= 20) {
-		range_new = 20;
+	if (range_new <= 0) {
+		range_new = 0;
 		std::wstring msg = server_limit >= 0 && range_new > server_limit ?
 				fwgettext("Viewing changed to %d (the minimum), but limited to %d by game or mod", range_new, server_limit) :
 				fwgettext("Viewing changed to %d (the minimum)", range_new);
@@ -2605,12 +2605,14 @@ void Game::handleClientEvent_PlayerDamage(ClientEvent *event, CameraOrientation 
 			player->getCAO()->getProperties().hp_max : PLAYER_MAX_HP_DEFAULT;
 		f32 damage_ratio = event->player_damage.amount / hp_max;
 
-		runData.damage_flash += 95.0f + 64.f * damage_ratio;
+		/* Disable damage flash
+		 runData.damage_flash += 95.0f + 64.f * damage_ratio;
 		runData.damage_flash = MYMIN(runData.damage_flash, 127.0f);
 
-		player->hurt_tilt_timer = 1.5f;
-		player->hurt_tilt_strength =
-			rangelim(damage_ratio * 5.0f, 1.0f, 4.0f);
+		 Disable damage hurt tilt
+	 player->hurt_tilt_timer = 1.5f;
+	 player->hurt_tilt_strength = rangelim(damage_ratio * 5.0f, 1.0f, 4.0f);
+	*/
 	}
 
 	// Play damage sound
@@ -4080,13 +4082,13 @@ void Game::drawScene(ProfilerGraph *graph, RunStats *stats)
 
 	/*
 		Damage flash
-	*/
-	if (this->runData.damage_flash > 0.0f) {
+    if (this->runData.damage_flash > 0.0f) {
 		video::SColor color(this->runData.damage_flash, 180, 0, 0);
-		this->driver->draw2DRectangle(color,
-					core::rect<s32>(0, 0, screensize.X, screensize.Y),
+			this->driver->draw2DRectangle(color,
+				core::rect<s32>(0, 0, screensize.X, screensize.Y),
 					NULL);
-	}
+    }
+	*/
 
 	this->driver->endScene();
 

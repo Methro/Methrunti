@@ -371,6 +371,8 @@ void set_default_settings()
 	settings->setDefault("no_render_particles", "true");
 	settings->setDefault("enable_clouds", "false");
 	settings->setDefault("enable_particles","false");
+	settings->setDefault("enable_left_hand", "false");
+	settings->setDefault("disable_view_bobbing", "true");
 
 	// Main menu
 	settings->setDefault("main_menu_path", "");
