@@ -6,7 +6,7 @@ AppDir:
     id: net.minetest.minetest
     name: Luanti
     icon: luanti
-    version: !ENV ${VERSION}
+    version: 5.12.0-dev
     exec: usr/bin/luanti
     exec_args: $@
   files:
