@@ -369,6 +369,8 @@ void set_default_settings()
 	//Others
 	settings->setDefault("fullbright", "true");
 	settings->setDefault("no_render_particles", "true");
+	settings->setDefault("enable_clouds", "false");
+	settings->setDefault("enable_particles","false");
 
 	// Main menu
 	settings->setDefault("main_menu_path", "");
