@@ -935,7 +935,7 @@ void Hud::drawBlockBounds()
 
 	driver->setMaterial(m_block_bounds_material);
 
-	u16 mesh_chunk_size = std::max<u16>(1, g_settings->getU16("client_mesh_chunk"));
+	u16 mesh_chunk_size = std::max<u16>(0, g_settings->getU16("client_mesh_chunk"));
 
 	v3s16 block_pos = getContainerPos(player->getStandingNodePos(), MAP_BLOCKSIZE);
 
