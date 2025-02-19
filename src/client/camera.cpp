@@ -517,7 +517,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 tool_reload_ratio)
 	m_cameranode->setAspectRatio(m_aspect);
 	m_cameranode->setFOV(m_fov_y);
 
-// Make new matrices and frustum
+	// Make new matrices and frustum
 	m_cameranode->updateMatrices();
 
 	if (m_arm_inertia)
@@ -607,11 +607,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 tool_reload_ratio)
 	// Set render distance
 	updateViewingRange();
 
-	// If the player is walking, swimming, or climbing,
-	// view bobbing is enabled and free_move is off,
-	// start (or continue) the view bobbing animation.
-	
-	// Bool to disable/enable view_bobbing
+// Bool to disable/enable view_bobbing
 const bool disable_view_bobbing = g_settings->getBool("disable_view_bobbing");
 
 
